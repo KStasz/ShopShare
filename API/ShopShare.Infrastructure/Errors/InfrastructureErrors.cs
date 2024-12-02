@@ -17,5 +17,12 @@ namespace ShopShare.Infrastructure.Errors
                 "Auth.Failed",
                 "Email or password is incorrect");
         }
+
+        public static class Role
+        {
+            public static readonly Error RoleDoesntExisit = new(
+            "Role.DoesNotExist",
+            "Specified role doesn't exist;");
+        }
     }
 }
