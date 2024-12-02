@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using ShopShare.Application.Common.Validation;
+using System.Reflection;
 
 namespace ShopShare.Application
 {
@@ -9,6 +13,8 @@ namespace ShopShare.Application
             serviceCollection.AddMediatR(
                 config => config.RegisterServicesFromAssemblies(
                     AppDomain.CurrentDomain.GetAssemblies()));
+            serviceCollection.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return serviceCollection;
         }

@@ -24,6 +24,7 @@ namespace ShopShare.Infrastructure
             serviceCollection.RegisterMappers();
 
             serviceCollection.AddScoped<IUsersRepository, UsersRepository>();
+            serviceCollection.AddScoped<IRolesRepository, RolesRepository>();
 
 
             return serviceCollection;

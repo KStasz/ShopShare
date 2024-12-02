@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopShare.Application.Authentication.Commands;
 using ShopShare.Application.Authentication.Models;
@@ -31,6 +32,7 @@ namespace ShopShare.API.Controllers
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<Result<AuthenticationResult>>> Login(LoginRequest loginRequest, bool storeInCookie = false, CancellationToken cancellationToken = default)
         {
             var query = _loginQueryMapper.Map(loginRequest);
@@ -66,6 +68,7 @@ namespace ShopShare.API.Controllers
         }
 
         [HttpPost("Register")]
+        [AllowAnonymous]
         public async Task<ActionResult<Result>> Register(RegisterRequest request, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(_registerCommandMapper.Map(request));
