@@ -20,12 +20,6 @@ namespace ShopShare.Application.Roles.Queries.GetAll
             await Task.CompletedTask;
             IEnumerable<Role> result = _rolesRepository.GetAll(x => true);
 
-            if (result is null || !result.Any())
-            {
-                return Result.Failure<IEnumerable<Role>>(
-                    ApplicationErrors.Role.RolesNotFound);
-            }
-
             return Result.Success(result);
         }
     }

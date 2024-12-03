@@ -66,7 +66,7 @@ namespace ShopShare.Infrastructure.Repositories
         public Role? Get(Func<Role, bool> predicate)
         {
             var identityRolePredicate = _roleFunctionMapper.Map(predicate);
-            var identityRole = _roleManager.Roles.FirstOrDefault();
+            var identityRole = _roleManager.Roles.FirstOrDefault(identityRolePredicate);
 
             if(identityRole is null)
             {
@@ -79,7 +79,9 @@ namespace ShopShare.Infrastructure.Repositories
         public IEnumerable<Role> GetAll(Func<Role, bool> predicate)
         {
             var identityRolePredicate = _roleFunctionMapper.Map(predicate);
-            var identityRoleCollection = _roleManager.Roles.Where(identityRolePredicate);
+            var identityRoleCollection = _roleManager.Roles
+                .Where(identityRolePredicate)
+                .ToList();
 
             return _roleMapper.Map(identityRoleCollection);
         }

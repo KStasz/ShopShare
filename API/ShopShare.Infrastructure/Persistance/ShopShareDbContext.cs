@@ -12,5 +12,12 @@ namespace ShopShare.Infrastructure.Persistance
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(ShopShareDbContext).Assembly);
+        }
     }
 }
