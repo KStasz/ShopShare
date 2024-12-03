@@ -18,22 +18,25 @@ namespace ShopShare.API.Controllers
         private readonly IMapper<RegisterRequest, RegisterCommand> _registerCommandMapper;
         private readonly IMapper<LoginRequest, LoginQuery> _loginQueryMapper;
         private readonly JwtSettings _jwtSettings;
+        private readonly IMapper<AuthenticationResult, AuthenticationResponse> _authenticationResponseMapper;
 
         public AuthenticationController(
             ISender mediator,
             IMapper<RegisterRequest, RegisterCommand> registerCommandMapper,
             IMapper<LoginRequest, LoginQuery> loginQueryMapper,
-            JwtSettings jwtSettings)
+            JwtSettings jwtSettings,
+            IMapper<AuthenticationResult, AuthenticationResponse> authenticationResponseMapper)
         {
             _mediator = mediator;
             _registerCommandMapper = registerCommandMapper;
             _loginQueryMapper = loginQueryMapper;
             _jwtSettings = jwtSettings;
+            _authenticationResponseMapper = authenticationResponseMapper;
         }
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<Result<AuthenticationResult>>> Login(LoginRequest loginRequest, bool storeInCookie = false, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result<AuthenticationResponse>>> Login(LoginRequest loginRequest, bool storeInCookie = false, CancellationToken cancellationToken = default)
         {
             var query = _loginQueryMapper.Map(loginRequest);
 
@@ -56,7 +59,9 @@ namespace ShopShare.API.Controllers
                 return Ok();
             }
 
-            return Ok(result.Value);
+            return Ok(
+                _authenticationResponseMapper.Map(
+                    result.Value));
         }
 
         [HttpPost("Logout")]

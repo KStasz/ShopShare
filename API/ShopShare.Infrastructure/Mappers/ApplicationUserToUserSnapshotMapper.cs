@@ -1,27 +1,27 @@
 ﻿using ShopShare.Application.Services.Mapper;
-using ShopShare.Domain.UserAggregate;
-using ShopShare.Domain.UserAggregate.ValueObjects;
+using ShopShare.Domain.Snapshots;
 using ShopShare.Infrastructure.Model;
 
 namespace ShopShare.Infrastructure.Mappers
 {
-    internal class ApplicationUserToUserAggregateMapper : IMapper<ApplicationUser, User>
+    public class ApplicationUserToUserSnapshotMapper : IMapper<ApplicationUser, UserSnapshot>
     {
-        public User Map(ApplicationUser source)
+        public UserSnapshot Map(ApplicationUser source)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(source.UserName);
             ArgumentException.ThrowIfNullOrWhiteSpace(source.Email);
 
-            return User.Create(
-                UserId.Create(source.Id),
+            return new UserSnapshot(
+                source.Id,
                 source.UserName,
                 source.Email,
                 source.FirstName,
                 source.LastName,
-                source.CreationDate);
+                source.CreationDate,
+                source.UserRoles.Select(x => x.RoleId));
         }
 
-        public IEnumerable<User> Map(IEnumerable<ApplicationUser> source)
+        public IEnumerable<UserSnapshot> Map(IEnumerable<ApplicationUser> source)
         {
             return source.Select(Map);
         }

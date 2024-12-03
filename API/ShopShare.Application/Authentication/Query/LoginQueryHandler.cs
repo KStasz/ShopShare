@@ -35,7 +35,7 @@ namespace ShopShare.Application.Authentication.Query
 
             if (result.IsFailure)
             {
-                return Result.Failure<AuthenticationResult>(result.Error);
+                return Result.Failure<AuthenticationResult>(result.Error!);
             }
 
             string token = _jwtTokenGenerator.GenerateToken(user);
