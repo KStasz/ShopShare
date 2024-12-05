@@ -66,7 +66,7 @@ namespace ShopShare.API.Controllers
                 return NotFound(result.ToResult());
             }
 
-            _logger.LogWarning("Successfully fetched user.");
+            _logger.LogInformation("Successfully fetched user.");
             return Ok(
                 Result.Success(
                     _userResponseMapper.Map(result.Value)));
