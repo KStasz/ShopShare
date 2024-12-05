@@ -85,8 +85,8 @@ namespace ShopShare.API.Controllers
             var result = await _mediator.Send(_registerCommandMapper.Map(request));
 
             return result.IsSuccess
-                ? Ok()
-                : BadRequest(result.Error);
+                ? Ok(result)
+                : BadRequest(result);
         }
     }
 }

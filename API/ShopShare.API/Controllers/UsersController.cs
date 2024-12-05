@@ -35,7 +35,7 @@ namespace ShopShare.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result<IEnumerable<UserResponse>>>> GetAll(CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Fetching all users...");
             var command = new GetUsersQuery();
@@ -44,17 +44,17 @@ namespace ShopShare.API.Controllers
             if (!result.IsSuccess)
             {
                 _logger.LogWarning("Failed to fetch users.");
+
                 return BadRequest(result.ToResult());
             }
 
             _logger.LogInformation("Successfully fetched users");
-            return Ok(
-                Result.Success(
-                    _userResponseMapper.Map(result.Value)));
+
+            return Ok(_userResponseMapper.Map(result.Value));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result<UserResponse>>> Get(Guid id, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation($"Fetching user with Id: {id}");
             var command = new GetUserQuery(UserId.Create(id));
@@ -63,28 +63,28 @@ namespace ShopShare.API.Controllers
             if (!result.IsSuccess)
             {
                 _logger.LogWarning("Failed to fetch user.");
+
                 return NotFound(result.ToResult());
             }
 
             _logger.LogInformation("Successfully fetched user.");
-            return Ok(
-                Result.Success(
-                    _userResponseMapper.Map(result.Value)));
+
+            return Ok(_userResponseMapper.Map(result.Value));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateUserRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result>> Update(UpdateUserRequest request, CancellationToken cancellationToken = default)
         {
             var command = _updateUserCommandMapper.Map(request);
             var result = await _mediatR.Send(command, cancellationToken);
 
             return result.IsSuccess
-                ? Ok()
+                ? Ok(result)
                 : BadRequest(result);
         }
 
         [HttpPut("AddUserToRole")]
-        public async Task<IActionResult> AddUserToRole(AddUserToRoleRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result>> AddUserToRole(AddUserToRoleRequest request, CancellationToken cancellationToken = default)
         {
             var command = _addUserToRoleCommand.Map(request);
             var result = await _mediatR.Send(command, cancellationToken);
@@ -95,7 +95,7 @@ namespace ShopShare.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result>> Delete(Guid id, CancellationToken cancellationToken = default)
         {
             var command = new DeleteUserCommand(UserId.Create(id));
             var result = await _mediatR.Send(command, cancellationToken);

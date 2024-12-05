@@ -7,6 +7,7 @@ using ShopShare.Application.Roles.Queries.GetAll;
 using ShopShare.Application.Roles.Queries.GetOne;
 using ShopShare.Application.Services.Mapper;
 using ShopShare.Contracts.Roles;
+using ShopShare.Domain.Common.Models;
 using ShopShare.Domain.RoleAggregate;
 
 namespace ShopShare.API.Controllers
@@ -30,58 +31,64 @@ namespace ShopShare.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<Result<IEnumerable<RoleResponse>>>> GetAll()
         {
             var result = await _mediatr.Send(new GetRolesQuery());
 
             return result.IsSuccess
-                ? Ok(_roleResponseMapper.Map(result.Value))
-                : NotFound(result.ToResult());
+                ? Ok(
+                    Result.Success(
+                        _roleResponseMapper.Map(result.Value)))
+                : NotFound(
+                    result.ToResult());
         }
 
         [HttpGet("{id}", Name = nameof(Get))]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<ActionResult<Result<RoleResponse>>> Get(Guid id)
         {
             var result = await _mediatr.Send(new GetRoleQuery(id));
 
             return result.IsSuccess
-                ? Ok(_roleResponseMapper.Map(result.Value))
-                : NotFound(result.ToResult());
+                ? Ok(
+                    Result.Success(
+                        _roleResponseMapper.Map(result.Value)))
+                : NotFound(
+                    result.ToResult());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CreateRoleRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result<RoleResponse>>> Add(CreateRoleRequest request, CancellationToken cancellationToken = default)
         {
             var command = _createRoleCommandMapper.Map(request);
             var result = await _mediatr.Send(command, cancellationToken);
 
             return result.IsSuccess
                 ? CreatedAtAction(
-                    nameof(Get), 
-                    new { id = result.Value.Id.Value }, 
-                    _roleResponseMapper.Map(result.Value))
+                    nameof(Get),
+                    new { id = result.Value.Id.Value },
+                    Result.Success(_roleResponseMapper.Map(result.Value)))
                 : BadRequest(result.ToResult());
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateRoleRequest request, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Result>> Update(UpdateRoleRequest request, CancellationToken cancellationToken = default)
         {
             var command = _updateRoleCommand.Map(request);
             var result = await _mediatr.Send(command, cancellationToken);
 
             return result.IsSuccess
-                ? Ok()
+                ? Ok(result)
                 : BadRequest(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<ActionResult<Result>> Delete(Guid id)
         {
             var command = new DeleteRoleCommand(id);
             var result = await _mediatr.Send(command);
 
             return result.IsSuccess
-                ? Ok()
+                ? Ok(result)
                 : BadRequest(result);
         }
     }
