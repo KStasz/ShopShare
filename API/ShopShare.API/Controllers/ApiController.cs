@@ -12,7 +12,7 @@ namespace ShopShare.API.Controllers
     {
         public override OkObjectResult Ok([ActionResultObjectValue] object? value)
         {
-            if (value?.GetType() == typeof(Result))
+            if (value?.GetType().BaseType == typeof(Result))
             {
                 return base.Ok(value);
             }
