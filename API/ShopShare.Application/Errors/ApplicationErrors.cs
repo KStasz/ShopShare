@@ -17,5 +17,12 @@ namespace ShopShare.Application.Errors
             "User.NotFound",
             "Specified user not found.");
         }
+
+        public static class ShoppingList
+        {
+            public static readonly Error ShoppingListNotFound = new(
+            "ShoppingList.NotFound",
+            "Specified list not found.");
+        }
     }
 }

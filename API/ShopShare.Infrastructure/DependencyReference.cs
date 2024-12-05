@@ -26,6 +26,7 @@ namespace ShopShare.Infrastructure
 
             serviceCollection.AddScoped<IUsersRepository, UsersRepository>();
             serviceCollection.AddScoped<IRolesRepository, RolesRepository>();
+            serviceCollection.AddScoped<IShoppingListRepository, ShoppingListRepository>();
 
 
             return serviceCollection;

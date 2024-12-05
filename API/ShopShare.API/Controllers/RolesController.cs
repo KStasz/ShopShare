@@ -43,8 +43,8 @@ namespace ShopShare.API.Controllers
                     result.ToResult());
         }
 
-        [HttpGet("{id}", Name = nameof(Get))]
-        public async Task<ActionResult<Result<RoleResponse>>> Get(Guid id)
+        [HttpGet("{id}", Name = nameof(GetRole))]
+        public async Task<ActionResult<Result<RoleResponse>>> GetRole(Guid id)
         {
             var result = await _mediatr.Send(new GetRoleQuery(id));
 
@@ -64,7 +64,7 @@ namespace ShopShare.API.Controllers
 
             return result.IsSuccess
                 ? CreatedAtAction(
-                    nameof(Get),
+                    nameof(GetRole),
                     new { id = result.Value.Id.Value },
                     Result.Success(_roleResponseMapper.Map(result.Value)))
                 : BadRequest(result.ToResult());
