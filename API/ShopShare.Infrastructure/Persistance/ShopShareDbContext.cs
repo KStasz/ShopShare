@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ShopShare.Domain.ShoppingListAggregate;
 using ShopShare.Infrastructure.Model;
 
 namespace ShopShare.Infrastructure.Persistance
@@ -12,6 +13,8 @@ namespace ShopShare.Infrastructure.Persistance
             : base(options)
         {
         }
+
+        public DbSet<ShoppingList> ShoppingLists { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
