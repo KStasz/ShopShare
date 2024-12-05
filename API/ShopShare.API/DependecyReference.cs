@@ -1,5 +1,4 @@
 ﻿using ShopShare.API.Common;
-using System.Reflection;
 
 namespace ShopShare.API
 {
@@ -10,7 +9,7 @@ namespace ShopShare.API
             serviceCollection.AddControllers();
             serviceCollection.AddEndpointsApiExplorer();
             serviceCollection.AddSwaggerGen();
-            serviceCollection.AddMappers(Assembly.GetExecutingAssembly());
+            serviceCollection.AddMappers();
 
             return serviceCollection;
         }

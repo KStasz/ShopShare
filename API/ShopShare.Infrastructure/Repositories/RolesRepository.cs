@@ -15,11 +15,12 @@ namespace ShopShare.Infrastructure.Repositories
 
         public RolesRepository(
             RoleManager<IdentityRole<Guid>> roleManager,
-            IMapperFactory mapperFactory)
+            IMapper<Func<Role, bool>, Func<IdentityRole<Guid>, bool>> roleFunctionMapper,
+            IMapper<IdentityRole<Guid>, Role> roleMapper)
         {
             _roleManager = roleManager;
-            _roleFunctionMapper = mapperFactory.GetMapper<Func<Role, bool>, Func<IdentityRole<Guid>, bool>>();
-            _roleMapper = mapperFactory.GetMapper<IdentityRole<Guid>, Role>();
+            _roleFunctionMapper = roleFunctionMapper;
+            _roleMapper = roleMapper;
         }
 
         public async Task<Result<Role>> AddAsync(string name, CancellationToken cancellationToken = default)

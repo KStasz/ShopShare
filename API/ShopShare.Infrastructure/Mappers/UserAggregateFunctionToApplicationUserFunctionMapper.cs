@@ -3,7 +3,7 @@ using ShopShare.Domain.UserAggregate;
 using ShopShare.Domain.UserAggregate.ValueObjects;
 using ShopShare.Infrastructure.Model;
 
-namespace ShopShare.Infrastructure.Mappers.Mappers
+namespace ShopShare.Infrastructure.Mappers
 {
     internal class UserAggregateFunctionToApplicationUserFunctionMapper : IMapper<Func<User, bool>, Func<ApplicationUser, bool>>
     {

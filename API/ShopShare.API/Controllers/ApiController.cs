@@ -8,6 +8,5 @@ namespace ShopShare.API.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ApiController : ControllerBase
     {
-
     }
 }

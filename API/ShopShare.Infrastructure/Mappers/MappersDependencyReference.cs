@@ -1,26 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using ShopShare.Application.Services.Mapper;
-using ShopShare.Infrastructure.Mappers.Implementations;
-using System.Reflection;
+using ShopShare.Domain.RoleAggregate;
+using ShopShare.Domain.Snapshots;
+using ShopShare.Domain.UserAggregate;
+using ShopShare.Infrastructure.Model;
 
 namespace ShopShare.Infrastructure.Mappers
 {
     internal static class MappersDependencyReference
     {
-        public static IServiceCollection RegisterMappers(this IServiceCollection services, Assembly assembly)
+        public static IServiceCollection RegisterMappers(this IServiceCollection services)
         {
-            var mapperTypes = assembly.GetTypes()
-                .Where(x => !x.IsAbstract && !x.IsInterface)
-                .SelectMany(x => x.GetInterfaces()
-                    .Where(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IMapper<,>))
-                    .Select(y => new { Implementation = x, Interface = y }));
-
-            foreach (var mapper in mapperTypes)
-            {
-                services.AddSingleton(mapper.Interface, mapper.Implementation);
-            }
-
-            services.AddSingleton<IMapperFactory, MapperFactory>();
+            services.AddSingleton<IMapper<Func<User, bool>, Func<ApplicationUser, bool>>, UserAggregateFunctionToApplicationUserFunctionMapper>();
+            services.AddSingleton<IMapper<Func<Role, bool>, Func<IdentityRole<Guid>, bool>>, RoleAggregateFunctionToIdentityRoleFunctionMapper>();
+            services.AddSingleton<IMapper<IdentityRole<Guid>, Role>, IdentityRoleToRoleMapper>();
+            services.AddSingleton<IMapper<ApplicationUser, UserSnapshot>, ApplicationUserToUserSnapshotMapper>();
 
             return services;
         }

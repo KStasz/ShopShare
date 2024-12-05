@@ -2,7 +2,7 @@
 using ShopShare.Domain.Snapshots;
 using ShopShare.Infrastructure.Model;
 
-namespace ShopShare.Infrastructure.Mappers.Mappers
+namespace ShopShare.Infrastructure.Mappers
 {
     public class ApplicationUserToUserSnapshotMapper : IMapper<ApplicationUser, UserSnapshot>
     {
