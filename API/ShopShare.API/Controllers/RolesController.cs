@@ -7,7 +7,6 @@ using ShopShare.Application.Roles.Queries.GetAll;
 using ShopShare.Application.Roles.Queries.GetOne;
 using ShopShare.Application.Services.Mapper;
 using ShopShare.Contracts.Roles;
-using ShopShare.Domain.Common.Models;
 using ShopShare.Domain.RoleAggregate;
 
 namespace ShopShare.API.Controllers
@@ -22,14 +21,12 @@ namespace ShopShare.API.Controllers
 
         public RolesController(
             ISender mediatr,
-            IMapper<CreateRoleRequest, CreateRoleCommand> createRoleCommandMapper,
-            IMapper<UpdateRoleRequest, UpdateRoleCommand> updateRoleCommand,
-            IMapper<Role, RoleResponse> roleResponseMapper)
+            IMapperFactory mapperFactory)
         {
             _mediatr = mediatr;
-            _createRoleCommandMapper = createRoleCommandMapper;
-            _updateRoleCommand = updateRoleCommand;
-            _roleResponseMapper = roleResponseMapper;
+            _createRoleCommandMapper = mapperFactory.GetMapper<CreateRoleRequest, CreateRoleCommand>();
+            _updateRoleCommand = mapperFactory.GetMapper<UpdateRoleRequest, UpdateRoleCommand>();
+            _roleResponseMapper = mapperFactory.GetMapper<Role, RoleResponse>();
         }
 
         [HttpGet]

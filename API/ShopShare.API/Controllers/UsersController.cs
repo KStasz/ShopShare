@@ -18,32 +18,36 @@ namespace ShopShare.API.Controllers
     {
         private readonly IMapper<User, UserResponse> _userResponseMapper;
         private readonly IMapper<UpdateUserRequest, UpdateUserCommand> _updateUserCommandMapper;
-        private readonly ISender _mediatR;
         private readonly IMapper<AddUserToRoleRequest, AddUserToRoleCommand> _addUserToRoleCommand;
+        private readonly ISender _mediatR;
+        private readonly ILogger<UsersController> _logger;
 
         public UsersController(
-            IMapper<User, UserResponse> userResponseMapper,
-            IMapper<UpdateUserRequest, UpdateUserCommand> updateUserCommandMapper,
+            IMapperFactory mapperFactory,
             ISender mediatR,
-            IMapper<AddUserToRoleRequest, AddUserToRoleCommand> addUserToRoleCommand)
+            ILogger<UsersController> logger)
         {
-            _userResponseMapper = userResponseMapper;
-            _updateUserCommandMapper = updateUserCommandMapper;
+            _userResponseMapper = mapperFactory.GetMapper<User, UserResponse>();
+            _updateUserCommandMapper = mapperFactory.GetMapper<UpdateUserRequest, UpdateUserCommand>();
+            _addUserToRoleCommand = mapperFactory.GetMapper<AddUserToRoleRequest, AddUserToRoleCommand>();
             _mediatR = mediatR;
-            _addUserToRoleCommand = addUserToRoleCommand;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation("Fetching all users...");
             var command = new GetUsersQuery();
             var result = await _mediatR.Send(command, cancellationToken);
 
             if (!result.IsSuccess)
             {
+                _logger.LogWarning("Failed to fetch users.");
                 return BadRequest(result.ToResult());
             }
 
+            _logger.LogInformation("Successfully fetched users");
             return Ok(
                 Result.Success(
                     _userResponseMapper.Map(result.Value)));
@@ -52,14 +56,17 @@ namespace ShopShare.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation($"Fetching user with Id: {id}");
             var command = new GetUserQuery(UserId.Create(id));
             var result = await _mediatR.Send(command, cancellationToken);
 
             if (!result.IsSuccess)
             {
+                _logger.LogWarning("Failed to fetch user.");
                 return NotFound(result.ToResult());
             }
 
+            _logger.LogWarning("Successfully fetched user.");
             return Ok(
                 Result.Success(
                     _userResponseMapper.Map(result.Value)));
