@@ -1,7 +1,6 @@
 ﻿using ShopShare.Domain.Models;
 using ShopShare.Domain.ShoppingListAggregate.Entities;
 using ShopShare.Domain.ShoppingListAggregate.ValueObjects;
-using System.Net;
 
 namespace ShopShare.Domain.ShoppingListAggregate
 {

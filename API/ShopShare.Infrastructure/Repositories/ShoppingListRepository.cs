@@ -1,5 +1,4 @@
-﻿using Microsoft.Identity.Client;
-using ShopShare.Application.Services.Repositories;
+﻿using ShopShare.Application.Services.Repositories;
 using ShopShare.Domain.ShoppingListAggregate;
 using ShopShare.Infrastructure.Persistance;
 
