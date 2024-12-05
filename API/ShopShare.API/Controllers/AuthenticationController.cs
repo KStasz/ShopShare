@@ -19,36 +19,39 @@ namespace ShopShare.API.Controllers
         private readonly IMapper<LoginRequest, LoginQuery> _loginQueryMapper;
         private readonly JwtSettings _jwtSettings;
         private readonly IMapper<AuthenticationResult, AuthenticationResponse> _authenticationResponseMapper;
+        private readonly ILogger<AuthenticationController> _logger;
 
         public AuthenticationController(
             ISender mediator,
-            IMapper<RegisterRequest, RegisterCommand> registerCommandMapper,
-            IMapper<LoginRequest, LoginQuery> loginQueryMapper,
             JwtSettings jwtSettings,
-            IMapper<AuthenticationResult, AuthenticationResponse> authenticationResponseMapper)
+            IMapperFactory mapperFactory,
+            ILogger<AuthenticationController> logger)
         {
             _mediator = mediator;
-            _registerCommandMapper = registerCommandMapper;
-            _loginQueryMapper = loginQueryMapper;
             _jwtSettings = jwtSettings;
-            _authenticationResponseMapper = authenticationResponseMapper;
+            _registerCommandMapper = mapperFactory.GetMapper<RegisterRequest, RegisterCommand>();
+            _loginQueryMapper = mapperFactory.GetMapper<LoginRequest, LoginQuery>();
+            _authenticationResponseMapper = mapperFactory.GetMapper<AuthenticationResult, AuthenticationResponse>();
+            _logger = logger;
         }
 
         [HttpPost("Login")]
         [AllowAnonymous]
         public async Task<ActionResult<Result<AuthenticationResponse>>> Login(LoginRequest loginRequest, bool storeInCookie = false, CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation("Trying to login user...");
             var query = _loginQueryMapper.Map(loginRequest);
-
             var result = await _mediator.Send(query);
 
             if (result.IsFailure)
             {
+                _logger.LogError("Logging in user failed.");
                 return BadRequest(result.Error);
             }
 
             if (storeInCookie)
             {
+                _logger.LogInformation($"Storing JWT in cookie. Parameter: StoreInCookie -> {storeInCookie}");
                 HttpContext.Response.Cookies.Append("Authorization", result.Value.token, new CookieOptions()
                 {
                     Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryTime),
@@ -59,6 +62,7 @@ namespace ShopShare.API.Controllers
                 return Ok();
             }
 
+            _logger.LogInformation("Logging in user succeeded. Returning JWT to user.");
             return Ok(
                 _authenticationResponseMapper.Map(
                     result.Value));
@@ -67,6 +71,7 @@ namespace ShopShare.API.Controllers
         [HttpPost("Logout")]
         public IActionResult Logout(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Deleting JWT from cookie.");
             HttpContext.Response.Cookies.Delete("Authorization");
             
             return Ok();
@@ -76,6 +81,7 @@ namespace ShopShare.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<Result>> Register(RegisterRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Trying to register new user.");
             var result = await _mediator.Send(_registerCommandMapper.Map(request));
 
             return result.IsSuccess

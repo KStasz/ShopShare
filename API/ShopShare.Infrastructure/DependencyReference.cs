@@ -12,6 +12,7 @@ using System.Text;
 using ShopShare.Application.Services.Repositories;
 using ShopShare.Infrastructure.Repositories;
 using ShopShare.Infrastructure.Mappers;
+using System.Reflection;
 
 namespace ShopShare.Infrastructure
 {
@@ -21,7 +22,7 @@ namespace ShopShare.Infrastructure
         {
             AddAuthentication(serviceCollection, configuration);
             AddDatabase(serviceCollection, configuration);
-            serviceCollection.RegisterMappers();
+            serviceCollection.RegisterMappers(Assembly.GetExecutingAssembly());
 
             serviceCollection.AddScoped<IUsersRepository, UsersRepository>();
             serviceCollection.AddScoped<IRolesRepository, RolesRepository>();

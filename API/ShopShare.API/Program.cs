@@ -18,6 +18,7 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
+    app.UseExceptionHandler("/api/error");
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.UseAuthentication();
