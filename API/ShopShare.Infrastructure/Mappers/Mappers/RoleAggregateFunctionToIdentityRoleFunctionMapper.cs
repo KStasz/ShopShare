@@ -3,7 +3,7 @@ using ShopShare.Application.Services.Mapper;
 using ShopShare.Domain.RoleAggregate;
 using ShopShare.Domain.RoleAggregate.ValueObjects;
 
-namespace ShopShare.Infrastructure.Mappers
+namespace ShopShare.Infrastructure.Mappers.Mappers
 {
     internal class RoleAggregateFunctionToIdentityRoleFunctionMapper
         : IMapper<Func<Role, bool>, Func<IdentityRole<Guid>, bool>>

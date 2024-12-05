@@ -15,22 +15,21 @@ namespace ShopShare.Infrastructure.Repositories
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IMapper<Func<User, bool>, Func<ApplicationUser, bool>> _funcMapper;
         private readonly IRolesRepository _rolesRepository;
+        private readonly IMapper<Func<User, bool>, Func<ApplicationUser, bool>> _funcMapper;
         private readonly IMapper<ApplicationUser, UserSnapshot> _userSnapshotMapper;
 
         public UsersRepository(
             UserManager<ApplicationUser> userManager,
-            IMapper<Func<User, bool>, Func<ApplicationUser, bool>> funcMapper,
             SignInManager<ApplicationUser> signInManager,
             IRolesRepository rolesRepository,
-            IMapper<ApplicationUser, UserSnapshot> userSnapshotMapper)
+            IMapperFactory mapperFactory)
         {
             _userManager = userManager;
-            _funcMapper = funcMapper;
             _signInManager = signInManager;
             _rolesRepository = rolesRepository;
-            _userSnapshotMapper = userSnapshotMapper;
+            _funcMapper = mapperFactory.GetMapper<Func<User, bool>, Func<ApplicationUser, bool>>();
+            _userSnapshotMapper = mapperFactory.GetMapper<ApplicationUser, UserSnapshot>();
         }
 
         public async Task<Result> AddAsync(string userName, string email, string firstName, string lastName, string password)
