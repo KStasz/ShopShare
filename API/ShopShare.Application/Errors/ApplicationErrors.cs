@@ -24,5 +24,12 @@ namespace ShopShare.Application.Errors
             "ShoppingList.NotFound",
             "Specified list not found.");
         }
+
+        public static class ListItem
+        {
+            public static readonly Error ListItemNotFound = new(
+            "ListItem.NotFound",
+            "Specified item not found.");
+        }
     }
 }

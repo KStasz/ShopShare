@@ -1,4 +1,5 @@
-﻿using ShopShare.Application.Services.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopShare.Application.Services.Repositories;
 using ShopShare.Domain.ShoppingListAggregate;
 using ShopShare.Infrastructure.Persistance;
 
@@ -27,12 +28,15 @@ namespace ShopShare.Infrastructure.Repositories
 
         public ShoppingList? Get(Func<ShoppingList, bool> predicate)
         {
-            return _context.ShoppingLists.FirstOrDefault(predicate);
+            return _context.ShoppingLists
+                //.Include(x => x.Items)
+                .FirstOrDefault(predicate);
         }
 
         public IEnumerable<ShoppingList> GetAll(Func<ShoppingList, bool> predicate)
         {
             return _context.ShoppingLists
+                //.Include(x => x.Items)
                 .Where(predicate)
                 .ToList();
         }
