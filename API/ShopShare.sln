@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.API", "ShopShare.API\ShopShare.API.csproj", "{1341E319-307C-4E9F-B954-439521CB7553}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.API", "Src\ShopShare.API\ShopShare.API.csproj", "{1341E319-307C-4E9F-B954-439521CB7553}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Domain", "ShopShare.Domain\ShopShare.Domain.csproj", "{7BA19C74-5923-43C7-A461-B95F80AB79BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Domain", "Src\ShopShare.Domain\ShopShare.Domain.csproj", "{7BA19C74-5923-43C7-A461-B95F80AB79BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Infrastructure", "ShopShare.Infrastructure\ShopShare.Infrastructure.csproj", "{F43855BE-FE4C-4FC6-95CD-FED1B9DC4DE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Infrastructure", "Src\ShopShare.Infrastructure\ShopShare.Infrastructure.csproj", "{F43855BE-FE4C-4FC6-95CD-FED1B9DC4DE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Application", "ShopShare.Application\ShopShare.Application.csproj", "{8A80DF70-DC7C-4F66-A2C0-171EF26379E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Application", "Src\ShopShare.Application\ShopShare.Application.csproj", "{8A80DF70-DC7C-4F66-A2C0-171EF26379E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Contracts", "ShopShare.Contracts\ShopShare.Contracts.csproj", "{D9BB2D75-B4C5-4C9D-998D-3EA20BACC432}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.Contracts", "Src\ShopShare.Contracts\ShopShare.Contracts.csproj", "{D9BB2D75-B4C5-4C9D-998D-3EA20BACC432}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopShare.APITests", "Tests\ShopShare.APITests\ShopShare.APITests.csproj", "{D69C73DF-C361-407B-A52E-5EE686AD2032}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{093F6A65-D8F4-44D8-AC7C-5B36D6832054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +43,15 @@ Global
 		{D9BB2D75-B4C5-4C9D-998D-3EA20BACC432}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9BB2D75-B4C5-4C9D-998D-3EA20BACC432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9BB2D75-B4C5-4C9D-998D-3EA20BACC432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69C73DF-C361-407B-A52E-5EE686AD2032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69C73DF-C361-407B-A52E-5EE686AD2032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69C73DF-C361-407B-A52E-5EE686AD2032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69C73DF-C361-407B-A52E-5EE686AD2032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D69C73DF-C361-407B-A52E-5EE686AD2032} = {093F6A65-D8F4-44D8-AC7C-5B36D6832054}
 	EndGlobalSection
 EndGlobal
